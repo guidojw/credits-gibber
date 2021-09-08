@@ -4,4 +4,4 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-loaders.init()
+export default loaders.init()

@@ -1,21 +1,15 @@
-import type { BaseCommand } from '../../commands'
-import type BaseEventHandler from './base'
+import type BaseHandler from '../base'
 import type Client from '../client'
 import type { Interaction } from 'discord.js'
+import { injectable } from 'inversify'
 
-const interactionCreateHandler: BaseEventHandler = async function (
-  client: Client,
-  interaction: Interaction
-): Promise<void> {
-  if (!interaction.isCommand()) {
-    return
-  }
+@injectable()
+export default class InteractionCreateHandler implements BaseHandler {
+  public async handle (client: Client, interaction: Interaction): Promise<void> {
+    if (!interaction.isCommand()) {
+      return
+    }
 
-  const command = client.container.get<BaseCommand | undefined>(interaction.commandName)
-  if (typeof command === 'undefined') {
-    return
+    await client.commandFactory(interaction.commandName).execute(interaction)
   }
-  await command.execute(interaction)
 }
-
-export default interactionCreateHandler

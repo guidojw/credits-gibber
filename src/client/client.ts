@@ -1,35 +1,36 @@
-import * as eventHandlers from './events'
-import { Client, Intents } from 'discord.js'
-import type { BaseEventHandler } from './events'
-import { Container } from 'inversify'
+import { Client as DiscordClient, Intents } from 'discord.js'
+import type { BaseCommand } from '../commands'
+import type BaseHandler from './base'
+import type { ClientEvents } from 'discord.js'
+import { constants } from '../util'
+import container from '../configs/container'
+import getDecorators from 'inversify-inject-decorators'
 
-export default class CreditsGibberClient {
-  public client: Client
-  public container: Container
+const { TYPES } = constants
+const { lazyInject } = getDecorators(container)
 
-  public constructor (container: Container) {
-    this.container = container
+export default class CreditsGibberClient extends DiscordClient {
+  @lazyInject(TYPES.CommandFactory)
+  public readonly commandFactory!: (commandName: string) => BaseCommand
 
-    this.client = new Client({
-      intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]
-    })
-    this.client.once('ready', this.ready.bind(this))
-  }
+  @lazyInject(TYPES.EventHandlerFactory)
+  private readonly eventHandlerFactory!: (eventName: string) => BaseHandler
 
-  public async login (token = process.env.DISCORD_TOKEN): Promise<string> {
-    return await this.client.login(token)
+  public constructor () {
+    super({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] })
+
+    this.once('ready', this.ready.bind(this))
   }
 
   private ready (): void {
     this.bindEvent('interactionCreate')
     this.bindEvent('messageCreate')
 
-    console.log(`Ready to serve on ${this.client.guilds.cache.size} servers, for ${this.client.users.cache.size} users.`)
+    console.log(`Ready to serve on ${this.guilds.cache.size} servers, for ${this.users.cache.size} users.`)
   }
 
-  private bindEvent (eventName: string): void {
-    // @ts-expect-error
-    const handler = eventHandlers[eventName] as BaseEventHandler
-    this.client.on(eventName, (...args) => handler(this, ...args))
+  private bindEvent (eventName: keyof Pick<ClientEvents, 'interactionCreate' | 'messageCreate'>): void {
+    const handler = this.eventHandlerFactory(eventName)
+    this.on(eventName, handler.handle.bind(handler, this))
   }
 }

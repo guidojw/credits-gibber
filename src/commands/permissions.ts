@@ -1,5 +1,7 @@
-import type { CommandInteraction, Role, User } from 'discord.js'
+import { Role, User } from 'discord.js'
+import type { APIRole } from 'discord-api-types/v9'
 import type BaseCommand from './base'
+import type { CommandInteraction } from 'discord.js'
 import { injectable } from 'inversify'
 
 @injectable()
@@ -19,16 +21,17 @@ export default class PermissionsCommand implements BaseCommand {
       })
     }
 
-    const type = interaction.options.getSubCommandGroup() === 'role' ? 'ROLE' : 'USER'
-    const action = interaction.options.getSubCommand() === 'edit' ? 'edit' : 'get'
+    const type = interaction.options.getSubcommandGroup() === 'role' ? 'ROLE' : 'USER'
+    const action = interaction.options.getSubcommand() === 'edit' ? 'edit' : 'get'
 
-    let roleOrUser: Role | User
+    let roleOrUser: Role | APIRole | User
     if (type === 'ROLE') {
-      // @ts-expect-error discord.js does not export APIRole
       roleOrUser = interaction.options.getRole('role', true)
     } else {
       roleOrUser = interaction.options.getUser('user', true)
     }
+
+    const mention = roleOrUser instanceof Role || roleOrUser instanceof User ? roleOrUser.toString() : `**${roleOrUser.id}**`
 
     switch (action) {
       case 'get' : {
@@ -39,7 +42,7 @@ export default class PermissionsCommand implements BaseCommand {
           allowed = permission?.permission ?? allowed
         } catch {}
         return await interaction.reply({
-          content: `${roleOrUser.toString()} can${allowed ? '' : 'not'} run **/${command.name}**`,
+          content: `${mention} can${allowed ? '' : 'not'} run **/${command.name}**`,
           ephemeral: true
         })
       }
@@ -54,7 +57,7 @@ export default class PermissionsCommand implements BaseCommand {
             roles: type === 'ROLE' ? roleOrUser.id : undefined
           })
           return await interaction.reply({
-            content: `Removed ${roleOrUser.toString()}'s **/${command.name}** permission`,
+            content: `Removed ${mention}'s **/${command.name}** permission`,
             ephemeral: true
           })
         } else {
@@ -66,7 +69,7 @@ export default class PermissionsCommand implements BaseCommand {
             }]
           })
           return await interaction.reply({
-            content: `Set ${roleOrUser.toString()}'s **/${command.name}** permission to **${allow}**`,
+            content: `Set ${mention}'s **/${command.name}** permission to **${allow}**`,
             ephemeral: true
           })
         }

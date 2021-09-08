@@ -1,4 +1,7 @@
 export const TYPES = {
-  CreditsGibberClient: Symbol.for('CreditsGibberClient'),
-  BloxyClient: Symbol.for('BloxyClient')
+  Handler: Symbol.for('Handler'),
+  EventHandlerFactory: Symbol.for('EventHandlerFactory'),
+
+  Command: Symbol.for('Command'),
+  CommandFactory: Symbol.for('CommandFactory')
 }

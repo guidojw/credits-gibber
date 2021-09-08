@@ -1,2 +1,2 @@
-export { default as credits } from './credits'
-export { default as permissions } from './permissions'
+export { default as creditsCommand } from './credits'
+export { default as permissionsCommand } from './permissions'

@@ -12,7 +12,15 @@ module.exports = {
     sourceType: 'module'
   },
   rules: {
-    'max-len': ['error', 120, {ignoreTemplateLiterals: true}],
+    'max-len': [
+      'error',
+      120,
+      {
+        comments: 80,
+        ignoreTemplateLiterals: true,
+        tabWidth: 2
+      }
+    ],
     'sort-imports': 'error',
     '@typescript-eslint/explicit-member-accessibility': 'error'
   }
