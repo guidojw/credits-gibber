@@ -29,7 +29,7 @@ export default class CreditsCommand implements BaseCommand {
           return await interaction.reply({
             // Roblox API returns "inf" in JSON when the amount of credits is
             // very big, which Node.js apparently sees as typeof undefined.
-            content: `**${userId}** has **${data.TrainCredits ?? '∞'}** credits`
+            content: `**${userId}** has **${Math.floor(data.TrainCredits) ?? '∞'}** credits`
           })
         }
       }
@@ -50,10 +50,10 @@ export default class CreditsCommand implements BaseCommand {
 
         await dataStore.SetAsync(key, {
           ...oldData,
-          TrainCredits: oldData.TrainCredits + amount
+          TrainCredits: Math.floor(oldData.TrainCredits + amount)
         })
         return await interaction.reply({
-          content: `Successfully changed **${userId}**'s credits from **${oldData.TrainCredits}** to **${oldData.TrainCredits + amount}**`
+          content: `Successfully changed **${userId}**'s credits from **${Math.floor(oldData.TrainCredits)}** to **${Math.floor(oldData.TrainCredits + amount)}**`
         })
       }
 
@@ -77,7 +77,7 @@ export default class CreditsCommand implements BaseCommand {
       //           return
       //         }
       //         oldData = { ...oldValue }
-      //         oldValue.TrainCredits += amount
+      //         oldValue.TrainCredits = Math.floor(oldValue.TrainCredits + amount)
       //         return oldValue
       //       }
       //       // ) as Exclude<DataStoreData, undefined>
@@ -95,8 +95,8 @@ export default class CreditsCommand implements BaseCommand {
       //
       //   return await interaction.reply({
       //     // eslint-disable-next-line max-len
-      //     // content: `Successfully changed **${userId}**'s credits: from **${oldData.TrainCredits}** to **${newData.TrainCredits}**`
-      //     content: `Successfully changed **${userId}**'s credits: from **${oldData.TrainCredits}** to **${oldData.TrainCredits + amount}**`
+      //     // content: `Successfully changed **${userId}**'s credits: from **${Math.floor(oldData.TrainCredits)}** to **${newData.TrainCredits}**`
+      //     content: `Successfully changed **${userId}**'s credits: from **${Math.floor(oldData.TrainCredits)}** to **${Math.floor(oldData.TrainCredits + amount)}**`
       //   })
       // }
       /* eslint-enable */
