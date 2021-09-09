@@ -10,6 +10,13 @@ export default class InteractionCreateHandler implements BaseHandler {
       return
     }
 
-    await client.commandFactory(interaction.commandName).execute(interaction)
+    try {
+      await client.commandFactory(interaction.commandName).execute(interaction)
+    } catch (err) {
+      await interaction.reply({
+        content: err.toString(),
+        ephemeral: true
+      })
+    }
   }
 }

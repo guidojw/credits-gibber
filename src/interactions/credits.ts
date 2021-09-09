@@ -14,7 +14,7 @@ const creditsCommand = {
     }]
   }, {
     name: 'give',
-    description: 'Give Roblox users edits',
+    description: 'Give a Roblox user\'s credits',
     type: 'SUB_COMMAND' as const,
     options: [{
       name: 'userid',
