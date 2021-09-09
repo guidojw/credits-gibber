@@ -30,6 +30,8 @@ bind<BaseCommand>(TYPES.Command).to(commands.CreditsCommand)
   .whenTargetTagged('command', 'credits')
 bind<BaseCommand>(TYPES.Command).to(commands.PermissionsCommand)
   .whenTargetTagged('command', 'permissions')
+bind<BaseCommand>(TYPES.Command).to(commands.TrainsCommand)
+  .whenTargetTagged('command', 'trains')
 
 bind<interfaces.Factory<BaseCommand>>(TYPES.CommandFactory).toFactory<BaseCommand>(
   (context: interfaces.Context) => {
