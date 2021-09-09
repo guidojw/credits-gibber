@@ -29,7 +29,7 @@ export default class CreditsCommand implements BaseCommand {
           return await interaction.reply({
             // Roblox API returns "inf" in JSON when the amount of credits is
             // very big, which Node.js apparently sees as typeof undefined.
-            content: `**${userId}** has **${Math.floor(data.TrainCredits) ?? '∞'}** credits`
+            content: `**${userId}** has **${typeof data.TrainCredits !== 'undefined' ? Math.floor(data.TrainCredits) : '∞'}** credits`
           })
         }
       }
