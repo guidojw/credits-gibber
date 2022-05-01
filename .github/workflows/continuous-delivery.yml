@@ -63,7 +63,7 @@ jobs:
   update_check_run:
     name: Update Check Run
     runs-on: ubuntu-latest
-    needs: [branch_check, publish_image, deploy]
+    needs: [branch_check, deploy]
     if: github.ref_name == 'main' && always()
     steps:
       - name: Get conclusion
@@ -84,7 +84,6 @@ jobs:
         with:
           app_id: ${{ env.APP_ID }}
           private_key: ${{ secrets.APP_PRIVATE_KEY }}
-          sha: ${{ needs.merge.outputs.sha }}
           name: Continuous Delivery
           conclusion: ${{ steps.get_conclusion.outputs.conclusion }}
           details_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

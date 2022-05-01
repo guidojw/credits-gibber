@@ -16,12 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.get_metadata.outputs.tag }}
-      build_args: ${{ steps.get_metadata.outputs.build_args }}
     steps:
       - name: Get metadata
         id: get_metadata
-        env:
-          INPUT_SHA: ${{ inputs.sha }}
         run: |
           if [ $GITHUB_REF_NAME = 'main' ]; then
             echo '::set-output name=tag::latest'
