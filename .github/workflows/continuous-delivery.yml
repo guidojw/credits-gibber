@@ -1,0 +1,89 @@
+name: Continuous Delivery
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: cd-${{ github.ref_name }}
+
+env:
+  PROJECT_NAME: credits-gibber
+  APP_ID: 152323
+
+jobs:
+  branch_check:
+    name: Branch Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate branch
+        run: |
+          if [ $GITHUB_REF_NAME != 'main' ]; then
+            echo 'This workflow can only be run on the main branch.'
+            exit 1
+          fi
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: branch_check
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # tag=v2.4.0
+
+      - name: Start deployment
+        uses: bobheadxi/deployments@1592370e045077d800a62db6a096718077c30577 # tag=v1.0.1
+        id: start_deployment
+        with:
+          step: start
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: production
+
+      - name: Deploy
+        uses: appleboy/ssh-action@1d1b21ca96111b1eb4c03c21c14ebb971d2200f6 # tag=v0.1.4
+        with:
+          host: guidojw.nl
+          username: github-actions
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: PROJECT_NAME
+          script: |
+            cd /opt/docker/$PROJECT_NAME
+            docker-compose pull
+            docker-compose up -d
+
+      - name: Finish deployment
+        uses: bobheadxi/deployments@1592370e045077d800a62db6a096718077c30577 # tag=v1.0.1
+        if: steps.start_deployment.conclusion == 'success' && always()
+        with:
+          step: finish
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: ${{ job.status }}
+          deployment_id: ${{ steps.start_deployment.outputs.deployment_id }}
+          env: production
+
+  update_check_run:
+    name: Update Check Run
+    runs-on: ubuntu-latest
+    needs: [branch_check, deploy]
+    if: github.ref_name == 'main' && always()
+    steps:
+      - name: Get conclusion
+        id: get_conclusion
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo '::set-output name=conclusion::success'
+          for RESULT in $RESULTS; do
+            if [ $RESULT = 'cancelled' ] || [ $RESULT = 'failure' ]; then
+              echo '::set-output name=conclusion::'$RESULT
+              break
+            fi
+          done
+
+      - name: Update Continuous Delivery check run
+        uses: guidojw/actions/update-check-run@2b1dea8cbd9e44491c269e771b75636026caf8ca # tag=v1.1.0
+        with:
+          app_id: ${{ env.APP_ID }}
+          private_key: ${{ secrets.APP_PRIVATE_KEY }}
+          name: Continuous Delivery
+          conclusion: ${{ steps.get_conclusion.outputs.conclusion }}
+          details_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
