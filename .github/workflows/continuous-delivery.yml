@@ -41,7 +41,7 @@ jobs:
       - name: Deploy
         uses: appleboy/ssh-action@1d1b21ca96111b1eb4c03c21c14ebb971d2200f6 # tag=v0.1.4
         with:
-          host: guidojw.nl
+          host: ${{ secrets.SSH_HOST }}
           username: github-actions
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           envs: PROJECT_NAME
