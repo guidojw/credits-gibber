@@ -5,6 +5,7 @@ import applicationConfig from '../configs/application'
 import { injectable } from 'inversify'
 
 type DataStoreData = { TrainCredits: number } | undefined
+type DataStoreGetResult = [DataStoreData]
 
 @injectable()
 export default class CreditsCommand implements BaseCommand {
@@ -20,7 +21,8 @@ export default class CreditsCommand implements BaseCommand {
         const { value: userId } = interaction.options.get('userid', true) as { value: number }
         const key = applicationConfig.dataStoreKeyTemplate.replace(/{userId}/g, userId.toString())
 
-        const data = await dataStore.GetAsync(key) as DataStoreData
+        const result = await dataStore.GetAsync(key) as DataStoreGetResult
+        const data = result[0]
         if (typeof data === 'undefined') {
           return await interaction.reply({
             content: `**${userId}** has no in-game data yet`
@@ -42,7 +44,7 @@ export default class CreditsCommand implements BaseCommand {
         let oldData: DataStoreData
         let newData: DataStoreData
         try {
-          newData = await dataStore.UpdateAsync<DataStoreData>(
+          await dataStore.UpdateAsync<DataStoreData>(
             key,
             (oldValue: DataStoreData) => {
               if (typeof oldValue === 'undefined') {
@@ -50,9 +52,10 @@ export default class CreditsCommand implements BaseCommand {
               }
               oldData = { ...oldValue }
               oldValue.TrainCredits = Math.floor(oldValue.TrainCredits + amount)
+              newData = { ...oldValue }
               return oldValue
             }
-          ) as Exclude<DataStoreData, undefined>
+          )
         } catch {}
 
         if (typeof oldData === 'undefined' || typeof newData === 'undefined') {

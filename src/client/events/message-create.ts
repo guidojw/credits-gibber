@@ -17,18 +17,6 @@ export default class MessageCreateHandler implements BaseHandler {
     }
     if (message.content.toLowerCase() === '!deploy' && message.author.id === client.application?.owner?.id) {
       await guild.commands.set(Object.values(interactions))
-
-      const permissionsCommand = guild.commands.cache.find(command => command.name === 'permissions')
-      if (typeof permissionsCommand !== 'undefined') {
-        await permissionsCommand.permissions.add({
-          permissions: [{
-            id: message.author.id,
-            type: 'USER',
-            permission: true
-          }]
-        })
-      }
-
       await message.reply('Successfully set up Slash Commands for this guild.')
     }
   }
