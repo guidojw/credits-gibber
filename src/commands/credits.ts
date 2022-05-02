@@ -39,8 +39,23 @@ export default class CreditsCommand implements BaseCommand {
         const { value: amount } = interaction.options.get('amount', true) as { value: number }
         const key = applicationConfig.dataStoreKeyTemplate.replace(/{userId}/g, userId.toString())
 
-        const oldData = await dataStore.GetAsync(key) as DataStoreData
-        if (typeof oldData === 'undefined') {
+        let oldData: DataStoreData
+        let newData: DataStoreData
+        try {
+          newData = await dataStore.UpdateAsync<DataStoreData>(
+            key,
+            (oldValue: DataStoreData) => {
+              if (typeof oldValue === 'undefined') {
+                return
+              }
+              oldData = { ...oldValue }
+              oldValue.TrainCredits = Math.floor(oldValue.TrainCredits + amount)
+              return oldValue
+            }
+          ) as Exclude<DataStoreData, undefined>
+        } catch {}
+
+        if (typeof oldData === 'undefined' || typeof newData === 'undefined') {
           return await interaction.reply({
             content: `Cannot change credits of user with ID **${userId}**, they probably don't have any in-game data ` +
               'yet.\nAsk them to join the game and try again.',
@@ -48,58 +63,10 @@ export default class CreditsCommand implements BaseCommand {
           })
         }
 
-        await dataStore.SetAsync(key, {
-          ...oldData,
-          TrainCredits: Math.floor(oldData.TrainCredits + amount)
-        })
         return await interaction.reply({
-          content: `Successfully changed **${userId}**'s credits from **${Math.floor(oldData.TrainCredits)}** to **${Math.floor(oldData.TrainCredits + amount)}**`
+          content: `Successfully changed **${userId}**'s credits: from **${Math.floor(oldData.TrainCredits)}** to **${newData.TrainCredits}**`
         })
       }
-
-      // TODO: use below case for give subcommand when inner promises not
-      //  bubbling up errors in RbxDataStoreService is fixed.
-      /* eslint-disable */
-      // case 'give': {
-      //   const { value: userId } = interaction.options.get('userid', true) as { value: number }
-      //   const { value: amount } = interaction.options.get('amount', true) as { value: number }
-      //   const key = applicationConfig.dataStoreKeyTemplate.replace(/{userId}/g, userId.toString())
-      //
-      //   let oldData: DataStoreData
-      //   // let newData: Exclude<DataStoreData, undefined>
-      //   try {
-      //     // TODO: DataStore.UpdateAsync returns old data, uncomment when that's fixed.
-      //     // newData = await dataStore.UpdateAsync<DataStoreData>(
-      //     await dataStore.UpdateAsync<DataStoreData>(
-      //       key,
-      //       (oldValue: DataStoreData) => {
-      //         if (typeof oldValue === 'undefined') {
-      //           return
-      //         }
-      //         oldData = { ...oldValue }
-      //         oldValue.TrainCredits = Math.floor(oldValue.TrainCredits + amount)
-      //         return oldValue
-      //       }
-      //       // ) as Exclude<DataStoreData, undefined>
-      //     )
-      //   } catch {}
-      //
-      //   // if (typeof oldData === 'undefined') {
-      //   if (typeof oldData === 'undefined') {
-      //     return await interaction.reply({
-      //       content: `Cannot change credits of user with ID **${userId}**, they probably don't have any in-game data ` +
-      //         'yet.\nAsk them to join the game and try again.',
-      //       ephemeral: true
-      //     })
-      //   }
-      //
-      //   return await interaction.reply({
-      //     // eslint-disable-next-line max-len
-      //     // content: `Successfully changed **${userId}**'s credits: from **${Math.floor(oldData.TrainCredits)}** to **${newData.TrainCredits}**`
-      //     content: `Successfully changed **${userId}**'s credits: from **${Math.floor(oldData.TrainCredits)}** to **${Math.floor(oldData.TrainCredits + amount)}**`
-      //   })
-      // }
-      /* eslint-enable */
     }
   }
 }
