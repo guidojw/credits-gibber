@@ -7,6 +7,7 @@ import container from '../configs/container.js'
 import getDecorators from 'inversify-inject-decorators'
 
 const { TYPES } = constants
+// FIXME: why do we need to index default here?
 const { lazyInject } = getDecorators.default(container)
 
 export default class CreditsGibberClient extends DiscordClient {
