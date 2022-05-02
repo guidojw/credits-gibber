@@ -40,7 +40,7 @@ export default class CreditsCommand implements BaseCommand {
         const key = applicationConfig.dataStoreKeyTemplate.replace(/{userId}/g, userId.toString())
 
         let oldData: DataStoreData
-        let newData: Exclude<DataStoreData, undefined>
+        let newData: DataStoreData
         try {
           newData = await dataStore.UpdateAsync<DataStoreData>(
             key,
