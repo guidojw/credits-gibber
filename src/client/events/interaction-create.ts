@@ -1,5 +1,5 @@
-import type BaseHandler from '../base'
-import type Client from '../client'
+import type BaseHandler from '../base.js'
+import type Client from '../client.js'
 import type { Interaction } from 'discord.js'
 import { injectable } from 'inversify'
 
@@ -12,7 +12,7 @@ export default class InteractionCreateHandler implements BaseHandler {
 
     try {
       await client.commandFactory(interaction.commandName).execute(interaction)
-    } catch (err) {
+    } catch (err: any) {
       await interaction.reply({
         content: err.toString(),
         ephemeral: true

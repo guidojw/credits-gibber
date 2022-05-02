@@ -1,6 +1,5 @@
 export default {
-  placeId: 261290060,
+  universeId: 106510584,
   dataStoreName: 'TwinRail_Version1.9',
-  dataStoreScope: undefined,
   dataStoreKeyTemplate: 'PlayerList${userId}' // eslint-disable-line no-template-curly-in-string
 }
