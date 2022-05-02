@@ -55,7 +55,7 @@ export default class CreditsCommand implements BaseCommand {
           ) as Exclude<DataStoreData, undefined>
         } catch {}
 
-        if (typeof oldData === 'undefined') {
+        if (typeof oldData === 'undefined' || typeof newData === 'undefined') {
           return await interaction.reply({
             content: `Cannot change credits of user with ID **${userId}**, they probably don't have any in-game data ` +
               'yet.\nAsk them to join the game and try again.',
