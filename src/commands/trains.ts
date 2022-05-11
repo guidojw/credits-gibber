@@ -1,8 +1,8 @@
-import type BaseCommand from './base'
+import { DataStore, Universe } from '@daw588/roblox.js/dist/index.js'
+import type BaseCommand from './base.js'
 import type { CommandInteraction } from 'discord.js'
-import { DataStoreService } from '@mfd/rbxdatastoreservice'
 import { MessageAttachment } from 'discord.js'
-import applicationConfig from '../configs/application'
+import applicationConfig from '../configs/application.js'
 import { injectable } from 'inversify'
 
 type DataStoreData = { TrainData: number } | undefined
@@ -10,10 +10,8 @@ type DataStoreData = { TrainData: number } | undefined
 @injectable()
 export default class TrainsCommand implements BaseCommand {
   public async execute (interaction: CommandInteraction): Promise<void> {
-    const dataStore = DataStoreService.GetDataStore(
-      applicationConfig.dataStoreName,
-      applicationConfig.dataStoreScope
-    )
+    const universe = new Universe(applicationConfig.universeId, process.env.ROBLOX_KEY as string)
+    const dataStore = new DataStore(universe, applicationConfig.dataStoreName)
 
     const subCommand = interaction.options.getSubcommand()
     switch (subCommand) {
@@ -21,7 +19,7 @@ export default class TrainsCommand implements BaseCommand {
         const { value: userId } = interaction.options.get('userid', true) as { value: number }
         const key = applicationConfig.dataStoreKeyTemplate.replace(/{userId}/g, userId.toString())
 
-        const data = await dataStore.GetAsync(key) as DataStoreData
+        const data = (await dataStore.GetAsync<DataStoreData>(key))[0]
         if (typeof data === 'undefined') {
           return await interaction.reply({
             content: `**${userId}** has no in-game data yet`

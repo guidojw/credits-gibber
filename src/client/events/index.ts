@@ -1,2 +1,2 @@
-export { default as InteractionCreateHandler } from './interaction-create'
-export { default as MessageCreateHandler } from './message-create'
+export { default as InteractionCreateHandler } from './interaction-create.js'
+export { default as MessageCreateHandler } from './message-create.js'

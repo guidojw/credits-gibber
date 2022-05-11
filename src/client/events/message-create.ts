@@ -1,6 +1,6 @@
-import * as interactions from '../../interactions'
-import type BaseHandler from '../base'
-import type Client from '../client'
+import * as interactions from '../../interactions/index.js'
+import type BaseHandler from '../base.js'
+import type Client from '../client.js'
 import type { Message } from 'discord.js'
 import { injectable } from 'inversify'
 

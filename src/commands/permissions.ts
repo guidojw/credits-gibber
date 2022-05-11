@@ -1,6 +1,6 @@
 import { Role, User } from 'discord.js'
 import type { APIRole } from 'discord-api-types/v9'
-import type BaseCommand from './base'
+import type BaseCommand from './base.js'
 import type { CommandInteraction } from 'discord.js'
 import { injectable } from 'inversify'
 

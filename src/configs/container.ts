@@ -1,9 +1,9 @@
-import * as commands from '../commands'
-import type { BaseCommand } from '../commands'
-import type { BaseHandler } from '../client'
+import * as commands from '../commands/index.js'
+import type { BaseCommand } from '../commands/index.js'
+import type { BaseHandler } from '../client/index.js'
 import { Container } from 'inversify'
-import { constants } from '../util'
-import { eventHandlers } from '../client'
+import { constants } from '../util/index.js'
+import { eventHandlers } from '../client/index.js'
 import type { interfaces } from 'inversify'
 
 const { TYPES } = constants

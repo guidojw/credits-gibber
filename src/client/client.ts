@@ -1,13 +1,14 @@
 import { Client as DiscordClient, Intents } from 'discord.js'
-import type { BaseCommand } from '../commands'
-import type BaseHandler from './base'
+import type { BaseCommand } from '../commands/index.js'
+import type BaseHandler from './base.js'
 import type { ClientEvents } from 'discord.js'
-import { constants } from '../util'
-import container from '../configs/container'
+import { constants } from '../util/index.js'
+import container from '../configs/container.js'
 import getDecorators from 'inversify-inject-decorators'
 
 const { TYPES } = constants
-const { lazyInject } = getDecorators(container)
+// FIXME: why do we need to index default here?
+const { lazyInject } = getDecorators.default(container)
 
 export default class CreditsGibberClient extends DiscordClient {
   @lazyInject(TYPES.CommandFactory)
