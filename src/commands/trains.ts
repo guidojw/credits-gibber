@@ -1,4 +1,4 @@
-import { Universe, DataStore } from '@daw588/roblox.js/dist/index.js'
+import { DataStore, Universe } from '@daw588/roblox.js/dist/index.js'
 import type BaseCommand from './base.js'
 import type { CommandInteraction } from 'discord.js'
 import { MessageAttachment } from 'discord.js'

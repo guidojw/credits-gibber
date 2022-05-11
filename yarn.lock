@@ -23,10 +23,10 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@daw588/roblox.js@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@daw588/roblox.js/-/roblox.js-0.0.5.tgz#9c1f7d0165750a51eb343de72729365a39fa6135"
-  integrity sha512-nvQDDxVZ+AN9qm0hAfDF7vs5sUxCtr6ySh0Go7Wzo/JO0XA4INpVwSktuE4do0N37K9HuJf5RX9PsKnlwf7ZiA==
+"@daw588/roblox.js@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@daw588/roblox.js/-/roblox.js-0.0.6.tgz#0688cdd3fbde47e2a046e784df2028e9eb55ed56"
+  integrity sha512-HF/mu1qu8DlUrVtp9foytIKWCqkiaFA3DRpqhrILhp3NAovFDN4m8/Yl7l9ZERJOlLo768aGvLj8SsGogwqNuQ==
   dependencies:
     node-fetch "^3.2.3"
 
