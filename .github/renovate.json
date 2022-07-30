@@ -1,6 +1,4 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "local>guidojw/.github:renovate-config"
-  ]
+  "extends": ["github>guidojw/.github"]
 }
