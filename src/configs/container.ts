@@ -28,8 +28,6 @@ bind<interfaces.Factory<BaseHandler>>(TYPES.EventHandlerFactory).toFactory<BaseH
 // Commands
 bind<BaseCommand>(TYPES.Command).to(commands.CreditsCommand)
   .whenTargetTagged('command', 'credits')
-bind<BaseCommand>(TYPES.Command).to(commands.PermissionsCommand)
-  .whenTargetTagged('command', 'permissions')
 bind<BaseCommand>(TYPES.Command).to(commands.TrainsCommand)
   .whenTargetTagged('command', 'trains')
 

@@ -1,4 +1,4 @@
-import { Client as DiscordClient, Intents } from 'discord.js'
+import { Client as DiscordClient, GatewayIntentBits } from 'discord.js'
 import type { BaseCommand } from '../commands/index.js'
 import type BaseHandler from './base.js'
 import type { ClientEvents } from 'discord.js'
@@ -18,7 +18,7 @@ export default class CreditsGibberClient extends DiscordClient {
   private readonly eventHandlerFactory!: (eventName: string) => BaseHandler
 
   public constructor () {
-    super({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] })
+    super({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages] })
 
     this.once('ready', this.ready.bind(this))
   }
