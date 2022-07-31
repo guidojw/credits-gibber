@@ -6,7 +6,7 @@ import { injectable } from 'inversify'
 @injectable()
 export default class InteractionCreateHandler implements BaseHandler {
   public async handle (client: Client, interaction: Interaction): Promise<void> {
-    if (!interaction.isCommand()) {
+    if (!interaction.isChatInputCommand()) {
       return
     }
 

@@ -1,6 +1,6 @@
 import { DataStore, Universe } from '@daw588/roblox.js/dist/index.js'
 import type BaseCommand from './base.js'
-import type { CommandInteraction } from 'discord.js'
+import type { ChatInputCommandInteraction } from 'discord.js'
 import applicationConfig from '../configs/application.js'
 import { injectable } from 'inversify'
 
@@ -8,7 +8,7 @@ interface DataStoreData { TrainCredits: number }
 
 @injectable()
 export default class CreditsCommand implements BaseCommand {
-  public async execute (interaction: CommandInteraction): Promise<void> {
+  public async execute (interaction: ChatInputCommandInteraction): Promise<void> {
     const universe = new Universe(applicationConfig.universeId, process.env.ROBLOX_KEY as string)
     const dataStore = new DataStore(universe, applicationConfig.dataStoreName)
 
@@ -20,17 +20,19 @@ export default class CreditsCommand implements BaseCommand {
 
         try {
           const data = (await dataStore.GetAsync<DataStoreData>(key))[0]
-          return await interaction.reply({
+          await interaction.reply({
             content: `**${userId}** has **${data.TrainCredits !== Infinity ? Math.floor(data.TrainCredits) : '∞'}** credits`
           })
         } catch (err: any) {
           if (typeof err.status !== 'undefined' && err.status === 404) {
-            return await interaction.reply({
+            await interaction.reply({
               content: `**${userId}** has no in-game data yet`
             })
+            return
           }
           throw err
         }
+        return
       }
 
       case 'give': {
@@ -45,16 +47,18 @@ export default class CreditsCommand implements BaseCommand {
           newData = { ...oldData, TrainCredits: Math.floor(oldData.TrainCredits + amount) }
           await dataStore.SetAsync<DataStoreData>(key, newData)
         } catch (err) {
-          return await interaction.reply({
+          await interaction.reply({
             content: `Cannot change credits of user with ID **${userId}**, they probably don't have any in-game data ` +
               'yet.\nAsk them to join the game and try again.',
             ephemeral: true
           })
+          return
         }
 
-        return await interaction.reply({
+        await interaction.reply({
           content: `Successfully changed **${userId}**'s credits: from **${Math.floor(oldData.TrainCredits)}** to **${newData.TrainCredits}**`
         })
+        return
       }
     }
   }
