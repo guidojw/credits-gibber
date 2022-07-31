@@ -1,6 +1,6 @@
+import { AttachmentBuilder, type ChatInputCommandInteraction } from 'discord.js'
 import { DataStore, Universe } from '@daw588/roblox.js/dist/index.js'
 import type BaseCommand from './base.js'
-import { AttachmentBuilder, type ChatInputCommandInteraction } from 'discord.js'
 import applicationConfig from '../configs/application.js'
 import { injectable } from 'inversify'
 

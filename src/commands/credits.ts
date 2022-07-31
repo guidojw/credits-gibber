@@ -58,7 +58,6 @@ export default class CreditsCommand implements BaseCommand {
         await interaction.reply({
           content: `Successfully changed **${userId}**'s credits: from **${Math.floor(oldData.TrainCredits)}** to **${newData.TrainCredits}**`
         })
-        return
       }
     }
   }
