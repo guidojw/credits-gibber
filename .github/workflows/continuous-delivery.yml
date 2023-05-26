@@ -8,7 +8,6 @@ concurrency:
 
 env:
   PROJECT_NAME: credits-gibber
-  APP_ID: 152323
 
 jobs:
   branch_check:
@@ -80,8 +79,8 @@ jobs:
       - name: Update Continuous Delivery check run
         uses: guidojw/actions/update-check-run@5faa9418b42a6a77f81e11ae935287900673f98b # tag=v1.3.2
         with:
-          app_id: ${{ env.APP_ID }}
-          private_key: ${{ secrets.APP_PRIVATE_KEY }}
+          app_id: ${{ vars.GH_APP_ID }}
+          private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
           name: Continuous Delivery
           conclusion: ${{ steps.get_conclusion.outputs.conclusion }}
           details_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
