@@ -22,7 +22,7 @@ jobs:
           echo '::add-matcher::.github/problem-matchers/tsc.json'
 
       - name: Build test image
-        uses: guidojw/actions/build-docker-image@5faa9418b42a6a77f81e11ae935287900673f98b # tag=v1.3.2
+        uses: guidojw/actions/build-docker-image@870d7c8de5aeb08420bb88d8fbddb0222a9eac61 # v1.4.0
         with:
           name: app
 
@@ -45,7 +45,7 @@ jobs:
           bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
 
       - name: Load test image
-        uses: guidojw/actions/load-docker-image@5faa9418b42a6a77f81e11ae935287900673f98b # tag=v1.3.2
+        uses: guidojw/actions/load-docker-image@870d7c8de5aeb08420bb88d8fbddb0222a9eac61 # v1.4.0
         with:
           name: app
 

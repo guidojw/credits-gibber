@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
 
       - name: Start deployment
-        uses: bobheadxi/deployments@9d4477fdaa4120020cd10ab7e97f68c801422e73 # tag=v1.3.0
+        uses: bobheadxi/deployments@88ce5600046c82542f8246ac287d0a53c461bca3 # v1.4.0
         id: start_deployment
         with:
           step: start
@@ -49,7 +49,7 @@ jobs:
             docker-compose up -d
 
       - name: Finish deployment
-        uses: bobheadxi/deployments@9d4477fdaa4120020cd10ab7e97f68c801422e73 # tag=v1.3.0
+        uses: bobheadxi/deployments@88ce5600046c82542f8246ac287d0a53c461bca3 # v1.4.0
         if: steps.start_deployment.conclusion == 'success' && always()
         with:
           step: finish
@@ -77,7 +77,7 @@ jobs:
           done
 
       - name: Update Continuous Delivery check run
-        uses: guidojw/actions/update-check-run@5faa9418b42a6a77f81e11ae935287900673f98b # tag=v1.3.2
+        uses: guidojw/actions/update-check-run@870d7c8de5aeb08420bb88d8fbddb0222a9eac61 # v1.4.0
         with:
           app_id: ${{ vars.GH_APP_ID }}
           private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
