@@ -37,7 +37,7 @@ jobs:
           env: production
 
       - name: Deploy
-        uses: appleboy/ssh-action@f9010ff7f1bbd7db1a0b4bab661437550cea20c0 # tag=v0.1.5
+        uses: appleboy/ssh-action@55dabf81b49d4120609345970c91507e2d734799 # v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
           username: github-actions
