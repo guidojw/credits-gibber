@@ -15,14 +15,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
       - name: Add problem matchers
         run: |
           echo '::add-matcher::.github/problem-matchers/tsc.json'
 
       - name: Build test image
-        uses: guidojw/actions/build-docker-image@870d7c8de5aeb08420bb88d8fbddb0222a9eac61 # v1.4.0
+        uses: guidojw/actions/build-docker-image@c9efd29142fa8dee171af69eb081fc24d703cfc1 # v1.4.5
         with:
           name: app
 
@@ -32,7 +32,7 @@ jobs:
     needs: build
     steps:
       - name: Checkout code
-        uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
       - name: Add problem matchers
         run: |
@@ -45,7 +45,7 @@ jobs:
           bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
 
       - name: Load test image
-        uses: guidojw/actions/load-docker-image@870d7c8de5aeb08420bb88d8fbddb0222a9eac61 # v1.4.0
+        uses: guidojw/actions/load-docker-image@c9efd29142fa8dee171af69eb081fc24d703cfc1 # v1.4.5
         with:
           name: app
 
