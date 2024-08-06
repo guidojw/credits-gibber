@@ -30,7 +30,7 @@
     "eslint-config-standard-with-typescript": "^22.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^16.1.0",
-    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-promise": "^7.1.0",
     "reflect-metadata": "^0.1.13",
     "typescript": "^4.7.0-dev.20220502"
   },
