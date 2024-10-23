@@ -17,21 +17,21 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@daw588/roblox.js": "^0.0.6",
-    "discord-api-types": "^0.36.3",
-    "discord.js": "^14.1.2",
-    "dotenv": "^16.0.0",
-    "inversify": "^6.0.1",
+    "@daw588/roblox.js": "^0.1.7",
+    "discord-api-types": "^0.37.103",
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.4.5",
+    "inversify": "^6.0.3",
     "inversify-inject-decorators": "^3.1.0"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.31.0",
-    "eslint": "^8.20.0",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "eslint": "^8.57.1",
     "eslint-config-standard-with-typescript": "^22.0.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-n": "^16.1.0",
-    "eslint-plugin-promise": "^6.0.0",
-    "reflect-metadata": "^0.1.13",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.6.0",
+    "reflect-metadata": "^0.2.2",
     "typescript": "^4.7.0-dev.20220502"
   },
   "engines": {
