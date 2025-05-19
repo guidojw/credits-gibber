@@ -52,7 +52,6 @@ jobs:
       - name: Lint
         run: |
           EXIT_STATUS=0
-          ${{ steps.download_actionlint.outputs.executable }} -shellcheck= -pyflakes= \
-          -ignore 'property "gh_app_private_key" is not defined' || EXIT_STATUS=$?
+          ${{ steps.download_actionlint.outputs.executable }} -shellcheck= -pyflakes= || EXIT_STATUS=$?
           docker run app yarn lint || EXIT_STATUS=$?
           exit $EXIT_STATUS
