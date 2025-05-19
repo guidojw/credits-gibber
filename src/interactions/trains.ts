@@ -1,15 +1,18 @@
-const trainsCommand = {
+import { ApplicationCommandOptionType, type RESTPutAPIApplicationCommandsJSONBody } from 'discord-api-types/v10'
+
+const trainsCommand: RESTPutAPIApplicationCommandsJSONBody[number] = {
   name: 'trains',
   description: 'Get Roblox users their trains',
-  defaultPermission: false,
+  default_member_permissions: '0',
+  dm_permission: false,
   options: [{
     name: 'get',
     description: 'Get a Roblox user\'s trains',
-    type: 'SUB_COMMAND' as const,
+    type: ApplicationCommandOptionType.Subcommand,
     options: [{
       name: 'userid',
       description: 'The Roblox ID of the user to get the trains of',
-      type: 'INTEGER' as const,
+      type: ApplicationCommandOptionType.Integer,
       required: true
     }]
   }]

@@ -7,8 +7,6 @@ on:
 
 env:
   PROJECT_NAME: credits-gibber
-  REGISTRY_URL: ghcr.io
-  APP_ID: 152323
 
 jobs:
   metadata:
@@ -21,9 +19,9 @@ jobs:
         id: get_metadata
         run: |
           if [ $GITHUB_REF_NAME = 'main' ]; then
-            echo '::set-output name=tag::latest'
+            echo 'tag=latest' >> "$GITHUB_OUTPUT"
           else
-            echo '::set-output name=tag::'$GITHUB_REF_NAME
+            echo 'tag='"$GITHUB_REF_NAME" >> "$GITHUB_OUTPUT"
           fi
 
   publish:
@@ -32,30 +30,30 @@ jobs:
     needs: metadata
     steps:
       - name: Checkout code
-        uses: actions/checkout@7884fcad6b5d53d10323aee724dc68d8b9096a2e # tag=v2.4.2
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@f211e3e9ded2d9377c8cadc4489a4e38014bc4c9 # tag=v1.7.0
+        uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3.10.0
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@dd4fa0671be5250ee6f50aedf4cb05514abda2c7 # tag=v1.14.1
+        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
         with:
-          registry: ${{ env.REGISTRY_URL }}
+          registry: ${{ vars.DOCKER_REGISTRY_URL }}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push image
         id: build_push_image
-        uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a # tag=v2.10.0
+        uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25 # v5.4.0
         with:
           push: true
           context: .
           cache-from: type=gha,scope=main
           cache-to: type=gha,scope=main
           tags: |
-            ${{ env.REGISTRY_URL }}/${{ github.repository_owner }}/${{ env.PROJECT_NAME }}:${{
+            ${{ vars.DOCKER_REGISTRY_URL }}/${{ github.repository_owner }}/${{ env.PROJECT_NAME }}:${{
             needs.metadata.outputs.tag }}
 
   update_check_run:
@@ -69,19 +67,19 @@ jobs:
         env:
           RESULTS: ${{ join(needs.*.result, ' ') }}
         run: |
-          echo '::set-output name=conclusion::success'
+          echo 'conclusion=success' >> "$GITHUB_OUTPUT"
           for RESULT in $RESULTS; do
             if [ $RESULT = 'cancelled' ] || [ $RESULT = 'failure' ]; then
-              echo '::set-output name=conclusion::'$RESULT
+              echo 'conclusion='"$RESULT" >> "$GITHUB_OUTPUT"
               break
             fi
           done
 
       - name: Update Publish Image check run
-        uses: guidojw/actions/update-check-run@5faa9418b42a6a77f81e11ae935287900673f98b # tag=v1.3.2
+        uses: guidojw/actions/update-check-run@fa7c189ff9d3c00fb9c69b98ff701cd772783dbd # v1.4.8
         with:
-          app_id: ${{ env.APP_ID }}
-          private_key: ${{ secrets.APP_PRIVATE_KEY }}
+          app_id: ${{ vars.GH_APP_ID }}
+          private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
           name: Publish Image
           conclusion: ${{ steps.get_conclusion.outputs.conclusion }}
           details_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
