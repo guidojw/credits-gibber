@@ -77,7 +77,7 @@ jobs:
           done
 
       - name: Update Continuous Delivery check run
-        uses: guidojw/actions/update-check-run@870d7c8de5aeb08420bb88d8fbddb0222a9eac61 # v1.4.0
+        uses: guidojw/actions/update-check-run@93f79307970f9904f178fa99c97bf02f5bc955c9 # v2.0.0
         with:
           app_id: ${{ vars.GH_APP_ID }}
           private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
