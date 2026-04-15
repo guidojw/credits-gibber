@@ -20,7 +20,7 @@
     "@daw588/roblox.js": "^0.0.6",
     "discord-api-types": "^0.36.3",
     "discord.js": "^14.1.2",
-    "dotenv": "^16.0.0",
+    "dotenv": "^17.4.2",
     "inversify": "^6.0.1",
     "inversify-inject-decorators": "^3.1.0"
   },
